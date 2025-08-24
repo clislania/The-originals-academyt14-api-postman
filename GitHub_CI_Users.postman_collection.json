@@ -1,0 +1,1416 @@
+{
+	"info": {
+		"_postman_id": "dac116ef-e801-4ba0-895a-7b8fd7d08c91",
+		"name": "02Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45819448",
+		"_collection_link": "https://red-desert-9732329.postman.co/workspace/The-Originals~53928abd-6c22-410c-8bfe-1e581472da0c/collection/45819448-dac116ef-e801-4ba0-895a-7b8fd7d08c91?action=share&source=collection_link&creator=45819448"
+	},
+	"item": [
+		{
+			"name": "Login sysadmin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"tokenAdmin\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    try {\r",
+							"        pm.expect(pm.response.json().msg).to.equal(\"Olá Qa-Coders-SYSADMIN, autenticação autorizada com sucesso!\");\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Failed to parse JSON: \" + e.message);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"verify token is valid\", function(){\r",
+							"    try {\r",
+							"        pm.expect(pm.response.json().token).to.exist;\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Failed to parse JSON: \" + e.message);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{emailAdmin}}\",\r\n    \"password\": \"{{passAdmin}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar meu usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Gerando massa de dados 5devs\r",
+							"pm.sendRequest({\r",
+							"    url: \"https://www.5devs.com.br/api/pessoa\",\r",
+							"    method: 'GET',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    }\r",
+							"    }, function (err, res) {\r",
+							"    if (err) {\r",
+							"        console.log(err);\r",
+							"    } else {\r",
+							"        const jsonData = res.json();\r",
+							"        pm.globals.set(\"nome\", jsonData.nome);\r",
+							"        pm.globals.set(\"mail\", jsonData.email);\r",
+							"        pm.globals.set(\"cpf\", jsonData.cpf);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"//Gerando massa de dados auto igual ao Dojo\r",
+							"function firstname() {\r",
+							"const names = ['Maria', 'Joao', 'Ana', 'Pedro', 'Fernanda', 'Carlos', 'Juliana', 'Rafael', 'Camila', 'Lucas'];\r",
+							"    const randomName = names[Math.floor(Math.random() * names.length)];\r",
+							"\r",
+							"    return randomName;\r",
+							"}\r",
+							"\r",
+							"pm.environment.set(\"FirstName\", firstname());\r",
+							"\r",
+							"function lastname() {\r",
+							"    const lastnames = ['Silva', 'Oliveira', 'Costa', 'Ferreira', 'Martins', 'Rodrigues', 'Santos', 'Pereira', 'Nunes', 'Lima'];\r",
+							"\r",
+							"    const randomLastname = lastnames[Math.floor(Math.random() * lastnames.length)];\r",
+							"\r",
+							"    return randomLastname;\r",
+							"}\r",
+							"pm.environment.set(\"LastName\", lastname());\r",
+							"\r",
+							"pm.environment.set(\"FullName\",\r",
+							"    pm.environment.get(\"FirstName\") + \" \" + pm.environment.get(\"LastName\"));\r",
+							"    \r",
+							"function randomCpf() {\r",
+							"    let randomCpf = '';\r",
+							"\r",
+							"    for (let i = 0; i < 11; i++) {\r",
+							"        randomCpf += Math.floor(Math.random() * 10).toString();\r",
+							"    }\r",
+							"    return randomCpf\r",
+							"}    \r",
+							"pm.globals.set(\"cpfauto\", randomCpf());\r",
+							"\r",
+							"pm.environment.set(\"Email\", pm.environment.get(\"FullName\").\r",
+							"toLowerCase()\r",
+							"    .replace(/\\s/g, '').normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\") + '@qacoders.com.br')\r",
+							"\r",
+							"function generatePassword() {\r",
+							"    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%';\r",
+							"    const comprimentoMinimo = 8;\r",
+							"    const comprimentoMaximo = 12;\r",
+							"    let senhaArray = [];\r",
+							"\r",
+							"    senhaArray.push(chars[Math.floor(Math.random() * 26)]);\r",
+							"    senhaArray.push(chars[26 + Math.floor(Math.random() * 26)]);\r",
+							"    senhaArray.push(chars[52 + Math.floor(Math.random() * 10)]);\r",
+							"    senhaArray.push(chars[62 + Math.floor(Math.random() * 4)]);\r",
+							"\r",
+							"    const comprimentoRestante = Math.max(comprimentoMinimo - senhaArray.length, comprimentoMaximo - senhaArray.length);\r",
+							"\r",
+							"    for (let i = 0; i < comprimentoRestante; i++) {\r",
+							"    senhaArray.push(chars[Math.floor(Math.random() * chars.length)]);\r",
+							"}\r",
+							"    return shuffleString(senhaArray.join(\"\"));\r",
+							"}\r",
+							"function shuffleString(string) {\r",
+							"    return string.split(\"\").sort(() => Math.random() - 0.5).join(\"\");\r",
+							"}\r",
+							"pm.globals.set(\"passwordAuto\", generatePassword());\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{nome}}\",\r\n    \"mail\": \"{{mail}}\",\r\n    \"accessProfile\": \"ADMIN\",\r\n    \"cpf\": \"{{cpf}}\",\r\n    \"password\": \"Test@5devs\",\r\n    \"confirmPassword\": \"Test@5devs\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login meu usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.be.eql(`Olá ${pm.globals.get(\"nome\")}, autenticação autorizada com sucesso!`);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"verify token is valid\", function(){\r",
+							"    pm.expect(pm.response.json().token).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Added check for user property before accessing _id\r",
+							"pm.test(\"Verify user ID exists\", function() {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.user).to.exist;\r",
+							"    pm.globals.set(\"meuID\", responseData.user._id);\r",
+							"});\r",
+							"\r",
+							"pm.globals.set(\"meuToken\", pm.response.json().token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					},
+					{
+						"key": "nome",
+						"value": "{{nome}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mail\": \"{{mail}}\",\r\n  \"password\": \"Test@5devs\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar usuários",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/user/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar usuário por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contar usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/user/count",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar dados",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Dados atualizados com sucesso!\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"Clislânia Testeput\",\r\n    \"mail\": \"clis@put.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar apenas FullName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Dados atualizados com sucesso!\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"clis@put.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FullName ausente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo nome completo é obrigatório.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"\",\r\n    \"mail\": \"{{mail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Apenas firstname",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"Informe o nome e sobrenome com as iniciais em letra maiúscula.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{firstname}}\",\r\n    \"mail\": \"{{mail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FullName com números",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo nome completo não deve conter números\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}123{{LastName}}\",\r\n    \"mail\": \"{{mail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FullName com mais de 100 caractéres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo nome completo não deve conter números\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateRandomString() {\r",
+							"    let nomecem1 = ''\r",
+							"    for (let i = 0; i < 101; i++)   \r",
+							"    {  \r",
+							"        //nomecem1 = nomecem1 + \"a\"\r",
+							"        nomecem1 += Math.random().toString(36).substr(2, 1);\r",
+							"    }\r",
+							"    return nomecem1\r",
+							"}\r",
+							"\r",
+							"pm.environment.set(\"nomecem1\", generateRandomString());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					},
+					{
+						"key": "nomecem1",
+						"value": "{{nomecem1}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{nomecem1}}\",\r\n    \"mail\": \"{{Email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo e-mail é obrigatório.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email sem @",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O e-mail informado é inválido. Informe um e-mail no formato [nome@domínio.com].\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"joaotesta.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email com espaço",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O e-mail informado é inválido. Informe um e-mail no formato [nome@domínio.com].\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"joao @espaco.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg alert\", () => {\r",
+							"    pm.expect(pm.response.json().alert[0]).to.equal(\"Esse usuário não existe em nossa base de dados.\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"{{Email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/000ece00000000000000000a",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"000ece00000000000000000a"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token de autorização ausente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg errors\", () => {\r",
+							"    pm.expect(pm.response.json().errors[0]).to.equal(\"No token provided.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{FullName}}\",\r\n    \"mail\": \"{{Email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar senha passando Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Senha atualizada com sucesso!\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"{{passwordAuto}}\",\r\n  \"confirmPassword\": \"{{passwordAuto}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/password/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"password",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status passando id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Status do usuario atualizado com sucesso para status false.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/status/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"status",
+						"{{meuID}}"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status id inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 \", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					},
+					{
+						"key": "meuId",
+						"value": "{{meuID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/user/status/000ece00000000000000000a",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"status",
+						"000ece00000000000000000a"
+					],
+					"query": [
+						{
+							"key": "Token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Usuário deletado com sucesso!.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{meuToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/user/{{meuID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"user",
+						"{{meuID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{tokenAdmin}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

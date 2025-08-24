@@ -1,0 +1,135 @@
+{
+	"id": "1c004bfe-851b-430d-8f2f-5c3ddd932c06",
+	"values": [
+		{
+			"key": "Url",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "tokenAdmin",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "{{nome}}",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "mail",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "nome",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "cpfauto",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "cpf",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuToken",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "{{passwordAuto}}",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Url_chips",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "passwordAuto",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Url_fallout",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "razaoSocial",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "mailEmpresa",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "cnpj",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "mailEmpresa5Dev",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuTokenEmpresa",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuIDEmpresa",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuTokenDiretoria",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "meuIDDiretoria",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2025-08-24T15:29:43.371Z",
+	"_postman_exported_using": "Postman/11.59.7"
+}

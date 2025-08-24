@@ -1,0 +1,1529 @@
+{
+	"info": {
+		"_postman_id": "990b55ed-8acd-43a3-9388-57253d81ffe8",
+		"name": "03Company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45819448",
+		"_collection_link": "https://red-desert-9732329.postman.co/workspace/The-Originals~53928abd-6c22-410c-8bfe-1e581472da0c/collection/45819448-990b55ed-8acd-43a3-9388-57253d81ffe8?action=share&source=collection_link&creator=45819448"
+	},
+	"item": [
+		{
+			"name": "Login sysadmin Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"tokenAdmin\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    try {\r",
+							"        pm.expect(pm.response.json().msg).to.equal(\"Olá Qa-Coders-SYSADMIN, autenticação autorizada com sucesso!\");\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Failed to parse JSON: \" + e.message);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"verify token is valid\", function(){\r",
+							"    try {\r",
+							"        pm.expect(pm.response.json().token).to.exist;\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Failed to parse JSON: \" + e.message);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{emailAdmin}}\",\r\n    \"password\": \"{{passAdmin}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar empresa",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: \"https://www.5devs.com.br/api/empresa\",\r",
+							"    method: 'GET',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    }\r",
+							"    }, function (err, res) {\r",
+							"    if (err) {\r",
+							"        console.log(err);\r",
+							"    } else {\r",
+							"        const jsonData = res.json();\r",
+							"        pm.globals.set(\"razaoSocial\", jsonData.razaoSocial);\r",
+							"        pm.globals.set(\"mailEmpresa5Dev\", jsonData.email);\r",
+							"        pm.globals.set(\"cnpj\", jsonData.cnpj);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"function firstname() {\r",
+							"const names = ['Aco', 'Ferro', 'Escola', 'Mercado', 'Aviamentos', 'Ferramentas', 'Consertos', 'Entreterimento', 'Caixas', 'Eletrica'];\r",
+							"    const randomName = names[Math.floor(Math.random() * names.length)];\r",
+							"\r",
+							"    return randomName;\r",
+							"}\r",
+							"\r",
+							"pm.environment.set(\"FirstName\", firstname());\r",
+							"\r",
+							"function lastname() {\r",
+							"    const lastnames = ['Silva', 'Oliveira', 'Costa', 'Ferreira', 'Martins', 'Rodrigues', 'Santos', 'Pereira', 'Nunes', 'Lima'];\r",
+							"\r",
+							"    const randomLastname = lastnames[Math.floor(Math.random() * lastnames.length)];\r",
+							"\r",
+							"    return randomLastname;\r",
+							"}\r",
+							"pm.environment.set(\"LastName\", lastname());\r",
+							"\r",
+							"pm.environment.set(\"nomeEmpresa\",\r",
+							"    pm.environment.get(\"FirstName\") + \" \" + pm.environment.get(\"LastName\"));\r",
+							"\r",
+							"pm.environment.set(\"emailEmpresa\", pm.environment.get(\"nomeEmpresa\").\r",
+							"toLowerCase()\r",
+							"    .replace(/\\s/g, '').normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\") + '@empresa.com.br')\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify user ID exists\", function() {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.newCompany._id).to.exist;\r",
+							"    pm.globals.set(\"meuIDEmpresa\", responseData.newCompany._id);\r",
+							"});\r",
+							"\r",
+							"pm.globals.set(\"meuTokenEmpresa\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"corporateName\": \"{{nomeEmpresa}}\",\r\n    \"registerCompany\": \"{{cnpj}}\",\r\n    \"mail\": \"{{emailEmpresa}}\",\r\n    \"matriz\": \"{{nomeEmpresa}} LTDA\",\r\n    \"responsibleContact\": \"{{nomeEmpresa}}\",\r\n    \"telephone\": \"01175971550002\",\r\n    \"serviceDescription\": \"Testes\",\r\n    \"address\": [\r\n        {\r\n            \"zipCode\": \"13216000\",\r\n            \"city\": \"Jundiaí\",\r\n            \"state\": \"SP\",\r\n            \"district\": \"Vila Joana\",\r\n            \"street\": \"Avenida São João\",\r\n            \"number\": \"370\",\r\n            \"complement\": \"Casa\",\r\n            \"country\": \"Brasil\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar empresas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contar empresas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/count",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar empresa ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar empresa ID token ausente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().errors[0]).to.equal(\"No token provided.\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar empresa ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().alert[0]).to.equal(\"Essa companhia não existe em nosso sistema.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/10000fa200000000c3000f01",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"10000fa200000000c3000f01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar empresa ID letras",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/qwertfapoiuytrewcçlkjhgf",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"qwertfapoiuytrewcçlkjhgf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar dados Empresa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Companhia atualizada com sucesso.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"corporateName\": \"Teste Put\",\r\n  \"registerCompany\": \"12126456000155\",\r\n  \"mail\": \"test@testput.com\",\r\n  \"matriz\": \"Teste\",\r\n  \"responsibleContact\": \"Marcio Put\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Endereço da companhia atualizado com sucesso.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"25585120\",\r\n      \"city\": \"São João de Meriti\",\r\n      \"state\": \"RJ\",\r\n      \"district\": \"Parque Novo Rio\",\r\n      \"street\": \"Rua Diamante\",\r\n      \"number\": \"128\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- Cep inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O CEP informado não existe.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"12345678\",\r\n      \"city\": \"Governador Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"Rua Afonso Pena\",\r\n      \"number\": \"953\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- país inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O país fornecido não é válido.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"25585120\",\r\n      \"city\": \"São João de Meriti\",\r\n      \"state\": \"RJ\",\r\n      \"district\": \"Parque Novo Rio\",\r\n      \"street\": \"Rua Diamante\",\r\n      \"number\": \"128\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Inexistente\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- sem token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().errors[0]).to.equal(\"No token provided.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"35010000\",\r\n      \"city\": \"Governador Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"Rua Afonso Pena\",\r\n      \"number\": \"953\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa - estado com mais de 2 caracteres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[1]).to.equal(\"O campo 'estado' deve possuir 2 caracteres.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"25585120\",\r\n      \"city\": \"São João de Meriti\",\r\n      \"state\": \"RioJ\",\r\n      \"district\": \"Parque Novo Rio\",\r\n      \"street\": \"Rua Diamante\",\r\n      \"number\": \"128\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- Cidade com Números",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[1]).to.equal(\"O campo 'cidade' só pode conter letras e os caracteres especiais 'ª', 'º', '‘' e '-'.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"35010000\",\r\n      \"city\": \"Governador 123 Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"Rua Afonso Pena\",\r\n      \"number\": \"953\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- complemento 81 caracteres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo 'complemento' deve possuir no máximo 80 caracteres.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"25585120\",\r\n      \"city\": \"São João de Meriti\",\r\n      \"state\": \"RJ\",\r\n      \"district\": \"Parque Novo Rio\",\r\n      \"street\": \"Rua Diamante\",\r\n      \"number\": \"128\",\r\n      \"complement\": \"Texto para testar campo complemento que deve ternomáximo80caracteresconformeregra\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa-nº11digitos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo 'número' deve possuir no máximo 10 caracteres.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"35010000\",\r\n      \"city\": \"Governador Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"Rua Afonso Pena\",\r\n      \"number\": \"12345678910\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- número com letras",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Msg Número com letras\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo 'número' só pode conter apenas números.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"35010000\",\r\n      \"city\": \"Governador Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"Rua Afonso Pena\",\r\n      \"number\": \"953 A\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- logradouro 51 caracteres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Msg 50 caracteres\", () => {\r",
+							"    pm.expect(pm.response.json().error[1]).to.equal(\"O campo 'logradouro' deve possuir no máximo 50 caracteres.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"35010000\",\r\n      \"city\": \"Governador Valadares\",\r\n      \"state\": \"MG\",\r\n      \"district\": \"Centro\",\r\n      \"street\": \"O campo logradouro deveconteratécinquentacaracteres\",\r\n      \"number\": \"953\",\r\n      \"complement\": \"Casa\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar endereço empresa- Campos obrigatórios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar CEP obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[0]).to.equal(\"O campo 'CEP' é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar País obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[1]).to.equal(\"O campo País é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar Cidade obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[2]).to.equal(\"O campo 'cidade' é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar Estado obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[3]).to.equal(\"O campo 'estado' é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar Bairro obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[4]).to.equal(\"O campo 'bairro' é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar Logradouro obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[5]).to.equal(\"O campo 'logradouro' é obrigatório.\");\r",
+							"})\r",
+							"pm.test(\"Testar Número obrigatório.\", () => {\r",
+							"    pm.expect(pm.response.json().error[6]).to.equal(\"O campo 'número' é obrigatório.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"\",\r\n      \"city\": \"\",\r\n      \"state\": \"\",\r\n      \"district\": \"\",\r\n      \"street\": \"\",\r\n      \"number\": \"\",\r\n      \"complement\": \"\",\r\n      \"country\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/address/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"address",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status ID false",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});*/\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Status da companhia atualizado com sucesso.\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Testar status da companhia atualizado com sucesso\", () => {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.updateCompany.status).to.eql(false);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/status/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"status",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status ID true",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});*/\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Status da companhia atualizado com sucesso.\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Testar status da companhia atualizado com sucesso\", () => {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.updateCompany.status).to.eql(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/status/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"status",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status ID token ausente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().errors[0]).to.equal(\"No token provided.\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/status/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"status",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status ID campo status null",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"/*pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Campo status é obrigatório\");\r",
+							"})*/"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\":\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/status/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"status",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar status ID campo status com string",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"// pm.test(\"Testar msg validação\", () => {\r",
+							"//     pm.expect(pm.response.json().msg).to.equal(\"Campo status deve ser booleano\");\r",
+							"// })"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/company/status/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"status",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar empresa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Testar msg validação\", () => {\r",
+							"    pm.expect(pm.response.json().msg).to.equal(\"Companhia deletado com sucesso.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{Url}}/company/{{meuIDEmpresa}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"company",
+						"{{meuIDEmpresa}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
