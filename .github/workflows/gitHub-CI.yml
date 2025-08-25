@@ -39,7 +39,7 @@ jobs:
 
       - name: Step 3 Execute Postman Collection with Environment
         run: |
-          newman run ../The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -r htmlextra --reporter-htmlextra-export ../postman/newman/report.html
+          newman run ../The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json, -r htmlextra --reporter-htmlextra-export ../postman/newman/report.html
 
       - name: Step 4 Archive prodution artifact
         uses: actions/upload-artifact@v4
