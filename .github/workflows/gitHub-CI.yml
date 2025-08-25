@@ -49,13 +49,3 @@ jobs:
         with:
           name: report
           path: ./postman/newman/report.html
-
-      - name: Debug - Listar arquivos e mostrar variáveis
-        run: |
-          ls -l ./The-originals-academyt14-api-postman/
-          cat ./The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json
-          cat ./The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json
-
-      - name: Debug - Mostrar valor da variável baseUrl
-        run: |
-          cat ./The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json | grep -i baseUrl
