@@ -45,8 +45,8 @@ jobs:
           newman run ../The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
           newman run ../The-originals-academyt14-api-postman/GitHub_CI_Company.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
 
-      - name: Step 4 Archive prodution artifact
+      - name: Step 4 Archive prodution artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: report
+          name: reports
           path: ./postman/newman/report.html
