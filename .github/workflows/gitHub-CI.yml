@@ -42,7 +42,7 @@ jobs:
           newman run ./The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -e ./The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -e /The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -r htmlextra --reporter-htmlextra-export ./postman/newman/report.html
 
       - name: Step 4 Archive prodution artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: report
-          path: ./results/Report.html
+          path: ./postman/newman/report.html
