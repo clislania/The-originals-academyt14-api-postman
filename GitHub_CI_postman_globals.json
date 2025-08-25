@@ -3,55 +3,55 @@
 	"values": [
 		{
 			"key": "Url",
-			"value": "",
+			"value": "https://api-15-the-originals.qacoders.dev.br/api",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "tokenAdmin",
-			"value": "",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODgzYzI0NmNiNDM1MWUyOGQxM2ZhMmEiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRlTVk4T0QuanNOLlFkd3BRTFQub0llblVnbVpkVDBzbkZLMVRNVGhUOW9tL2o5OHJMOWN2eSIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDI1LzA3LzIwMjUsIDE0OjQzOjM0IEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjg4M2MyNDZjYjQzNTFlMjhkMTNmYTJiIn1dLCJfX3YiOjAsImlhdCI6MTc1NjEzMzQxOSwiZXhwIjoxNzU2MjE5ODE5fQ.gmp0qL39B7lIhuCqS3Rr64DdXIdw94LjlFTJI40EhsQ",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "{{nome}}",
-			"value": "",
+			"value": "João Pedro Zucatelli",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "mail",
-			"value": "",
+			"value": "catarina_nielsdatter@outlook.com",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "nome",
-			"value": "",
+			"value": "Catarina Nielsdatter",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "cpfauto",
-			"value": "",
+			"value": "52502618367",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "cpf",
-			"value": "",
+			"value": "50917220099",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "meuID",
-			"value": "",
+			"value": "68ac782d284fa7473f684469",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "meuToken",
-			"value": "",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGFjNzgyZDI4NGZhNzQ3M2Y2ODQ0NjkiLCJmdWxsTmFtZSI6IkNhdGFyaW5hIE5pZWxzZGF0dGVyIiwibWFpbCI6ImNhdGFyaW5hX25pZWxzZGF0dGVyQG91dGxvb2suY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkOENZUTkzUk9aQXJmR3dZY2FvOE5RZXQwVklLYk5lS1RabzhpU1cxTDdxMDYuaHkwWi9qd2EiLCJhY2Nlc3NQcm9maWxlIjoiQURNSU4iLCJjcGYiOiI1MDkxNzIyMDA5OSIsInN0YXR1cyI6dHJ1ZSwiYXVkaXQiOlt7InJlZ2lzdGVyZWRCeSI6eyJ1c2VySWQiOiI2ODgzYzI0NmNiNDM1MWUyOGQxM2ZhMmEiLCJ1c2VyTG9naW4iOiJzeXNhZG1pbkBxYWNvZGVycy5jb20ifSwicmVnaXN0cmF0aW9uRGF0ZSI6InNlZ3VuZGEtZmVpcmEsIDI1LzA4LzIwMjUsIDExOjUwOjIwIEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IlFhQ29kZXJzLTU4IiwiX2lkIjoiNjhhYzc4MmQyODRmYTc0NzNmNjg0NDZhIn1dLCJfX3YiOjAsImlhdCI6MTc1NjEzMzQyMiwiZXhwIjoxNzU2MjE5ODIyfQ.3fYi6RsU3GuH0ZKAW8Hiqy_mac3OeBDehVbgSM8Z7nA",
 			"type": "any",
 			"enabled": true
 		},
@@ -63,43 +63,43 @@
 		},
 		{
 			"key": "Url_chips",
-			"value": "",
+			"value": "https://api-chips.qacoders.dev.br/api",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "passwordAuto",
-			"value": "",
+			"value": "$q5cE91vF4qu",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "Url_fallout",
-			"value": "",
+			"value": "https://api-fallout.qacoders.dev.br/api",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "razaoSocial",
-			"value": "",
+			"value": "Vela Eventos",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "mailEmpresa",
-			"value": "",
+			"value": "suporte@canis.com.br",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "cnpj",
-			"value": "",
+			"value": "55748346000164",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "mailEmpresa5Dev",
-			"value": "",
+			"value": "ti@vela.com.br",
 			"type": "any",
 			"enabled": true
 		},
@@ -111,25 +111,25 @@
 		},
 		{
 			"key": "meuIDEmpresa",
-			"value": "",
+			"value": "68ab2e95284fa7473f6843ce",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "meuTokenDiretoria",
-			"value": "",
+			"value": "null",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "meuIDDiretoria",
-			"value": "",
+			"value": "68a266bde55aef2f9f9f2722",
 			"type": "any",
 			"enabled": true
 		}
 	],
 	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2025-08-24T15:29:43.371Z",
-	"_postman_exported_using": "Postman/11.59.7"
+	"_postman_exported_at": "2025-08-25T21:00:23.678Z",
+	"_postman_exported_using": "Postman/11.60.0"
 }
