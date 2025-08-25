@@ -40,9 +40,10 @@ jobs:
       - name: Garantir diretório do relatório
         run: mkdir -p ./postman/newman
 
-      - name: Step 3 Execute Postman Collection
+      - name: Step 3 Execute Postman Collections
         run: |
           newman run ../The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
+          newman run ../The-originals-academyt14-api-postman/GitHub_CI_Company.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
 
       - name: Step 4 Archive prodution artifact
         uses: actions/upload-artifact@v4
