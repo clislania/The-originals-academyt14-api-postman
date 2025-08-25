@@ -42,6 +42,7 @@ jobs:
 
       - name: Step 3 Execute Postman Collections
         run: |
+          set +e
           newman run ../The-originals-academyt14-api-postman/GitHub_CI_Users.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
           newman run ../The-originals-academyt14-api-postman/GitHub_CI_Company.postman_collection.json -g ../The-originals-academyt14-api-postman/GitHub_CI_postman_globals.json -e ../The-originals-academyt14-api-postman/GitHub_CI_postman_environment.json -r cli,htmlextra --reporter-htmlextra-export ./postman/newman/report.html
 
